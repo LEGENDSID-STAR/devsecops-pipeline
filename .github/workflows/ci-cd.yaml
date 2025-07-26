@@ -1,1 +1,24 @@
 
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Set up Kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'latest'
+
+    - name: Apply Kubernetes Manifests
+      run: |
+        kubectl apply -f .github/workflows/deployment.yaml
